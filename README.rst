@@ -1,3 +1,5 @@
+fork for naoqi version 2.8 on Nao V6
+
 Description
 ===========
 

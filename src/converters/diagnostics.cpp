@@ -61,8 +61,8 @@ DiagnosticsConverter::DiagnosticsConverter( const std::string& name, float frequ
   if ((robot_ == robot::PEPPER) || (robot_ == robot::NAO)) {
     p_body_temperature_ = session->service("ALBodyTemperature");
 
-    // Only call setEnableNotifications if NAOqi < 2.9
-    if (helpers::driver::isNaoqiVersionLesser(naoqi_version_, 2, 9))
+    // Only call setEnableNotifications if NAOqi < 2.8
+    if (helpers::driver::isNaoqiVersionLesser(naoqi_version_, 2, 8))
     {
       p_body_temperature_.call<void>("setEnableNotifications", true);
     }

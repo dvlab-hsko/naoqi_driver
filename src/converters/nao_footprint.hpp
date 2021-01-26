@@ -65,8 +65,8 @@ inline void addBaseFootprint( boost::shared_ptr<tf2_ros::Buffer> tf2_buffer, std
       );
 
   // adjust yaw according to torso orientation, all other angles 0 (= in z-plane)
-  /* double yaw = helpers::transform::getYaw( tf_odom_to_base.transform ) ;
-  tf2::Quaternion new_q;*/
+  /* double yaw = helpers::transform::getYaw( tf_odom_to_base.transform ) ;*/
+  tf2::Quaternion new_q;
   new_q.setRPY(0.0f, 0.0f, 0.0f); 
   tf2::Transform tf_base_to_foot( new_q, new_origin);
 

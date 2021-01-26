@@ -39,7 +39,7 @@ namespace nao
 
 inline void addBaseFootprint( boost::shared_ptr<tf2_ros::Buffer> tf2_buffer, std::vector<geometry_msgs::TransformStamped>& tf_transforms, const ros::Time& time )
 {
-  bool canTransform = tf2_buffer->canTransform("base_link", "l_sole", time, ros::Duration(0.2) );
+  bool canTransform = tf2_buffer->canTransform("base_link", "l_sole", time, ros::Duration(0.1) );
   if (!canTransform)
   {
     ROS_ERROR_STREAM("Do not calculate NAO Footprint, no transform possible " << time);

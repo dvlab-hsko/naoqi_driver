@@ -187,7 +187,7 @@ void JointStateConverter::callAll( const std::vector<message_actions::MessageAct
 
   if (robot_ == robot::NAO )
   {
-    nao::addBaseFootprint( tf2_buffer_, tf_transforms_, odom_stamp-ros::Duration(0.1) );
+    nao::addBaseFootprint( tf2_buffer_, tf_transforms_, odom_stamp-ros::Duration(0.2) );
   }
 
   // If nobody uses that buffer, do not fill it next time

@@ -163,7 +163,8 @@ void JointStateConverter::callAll( const std::vector<message_actions::MessageAct
   const ros::Time& odom_stamp = ros::Time::now();
   const float& odomX  =  al_odometry_data[0];
   const float& odomY  =  al_odometry_data[1];
-  const float& odomZ  =  al_odometry_data[2];
+  //const float& odomZ  =  al_odometry_data[2];
+  const float& odomZ = 0.0f;
   const float& odomWX =  al_odometry_data[3];
   const float& odomWY =  al_odometry_data[4];
   const float& odomWZ =  al_odometry_data[5];
@@ -174,7 +175,7 @@ void JointStateConverter::callAll( const std::vector<message_actions::MessageAct
 
   static geometry_msgs::TransformStamped msg_tf_odom;
   msg_tf_odom.header.frame_id = "odom";
-  msg_tf_odom.child_frame_id = "base_link";
+  msg_tf_odom.child_frame_id = "base_footprint";
   msg_tf_odom.header.stamp = odom_stamp;
 
   msg_tf_odom.transform.translation.x = odomX;

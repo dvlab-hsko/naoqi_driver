@@ -83,23 +83,23 @@ inline void addBaseFootprint( boost::shared_ptr<tf2_ros::Buffer> tf2_buffer, std
       );
   tf2::Transform tf_odom_to_base_conv( q,r);
   //tf2::Transform tf_odom_to_base_conv;
-  //tf2::convert( tf_odom_to_base.transform, tf_odom_to_base_conv );
-  tf2::Transform tf_base_to_footprint = tf_odom_to_base_conv.inverse() * tf_odom_to_footprint;*/
+  //tf2::convert( tf_odom_to_base.transform, tf_odom_to_base_conv ); */
+  tf2::Transform tf_foot_to_base = tf_base_to_foot.inverse();
 
   // convert it back to geometry_msgs
   geometry_msgs::TransformStamped message;
   //message.transform = tf2::toMsg(tf_base_to_footprint);
   message.header.stamp = time;
-  message.header.frame_id = "base_link";
-  message.child_frame_id = "base_footprint";
+  message.header.frame_id = "base_footprint";
+  message.child_frame_id = "base_link";
 
-  message.transform.rotation.x = tf_base_to_foot.getRotation().x();
-  message.transform.rotation.y = tf_base_to_foot.getRotation().y();
-  message.transform.rotation.z = tf_base_to_foot.getRotation().z();
-  message.transform.rotation.w = tf_base_to_foot.getRotation().w();
-  message.transform.translation.x = tf_base_to_foot.getOrigin().x();
-  message.transform.translation.y = tf_base_to_foot.getOrigin().y();
-  message.transform.translation.z = tf_base_to_foot.getOrigin().z();
+  message.transform.rotation.x = tf_foot_to_base.getRotation().x();
+  message.transform.rotation.y = tf_foot_to_base.getRotation().y();
+  message.transform.rotation.z = tf_foot_to_base.getRotation().z();
+  message.transform.rotation.w = tf_foot_to_base.getRotation().w();
+  message.transform.translation.x = tf_foot_to_base.getOrigin().x();
+  message.transform.translation.y = tf_foot_to_base.getOrigin().y();
+  message.transform.translation.z = tf_foot_to_base.getOrigin().z();
 
   //tf::transformTFToMsg( tf_base_to_footprint, message.transform);
   // publish transform with parent m_baseFrameId and new child m_baseFootPrintID

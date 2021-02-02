@@ -28,8 +28,7 @@
  * ROS includes
  */
 #include <ros/ros.h>
-
-
+#include <std_msgs/Float32.h>
 namespace naoqi
 {
 namespace subscriber
@@ -42,7 +41,7 @@ public:
   ~TurnheadSubscriber(){}
 
   void reset( ros::NodeHandle& nh );
-  void callback( const float radius );
+  void callback( const std_msgs::Float32::ConstPtr & inputRadius );
 
 private:
   qi::AnyObject p_motion_;

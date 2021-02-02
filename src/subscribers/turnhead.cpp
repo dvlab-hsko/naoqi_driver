@@ -23,7 +23,7 @@
 /*
  * ROS includes
  */
-
+#include <std_msgs/Float32.h>
 
 namespace naoqi
 {
@@ -35,15 +35,18 @@ TurnheadSubscriber::TurnheadSubscriber( const std::string& name, const std::stri
   p_motion_( session->service("ALMotion") )
 {}
 
-void TurnheadSubscriber::reset( const ros::NodeHandle& nh )
+void TurnheadSubscriber::reset( ros::NodeHandle& nh )
 {
   sub_turnhead_ = nh.subscribe( topic_, 10, &TurnheadSubscriber::callback, this );
   is_initialized_ = true;
 }
 
-void TurnheadSubscriber::callback( const float radius )
+void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadius )
 {
     
+    float radius = float(inputRadius->data);
+    float waittime = 3.0f;
+
     // ensure motors are active
     p_motion_.async<void>(
     "setStiffnesses",
@@ -51,18 +54,16 @@ void TurnheadSubscriber::callback( const float radius )
     
     //define basic vars
     float fractionMaxSpeed  = 0.1f;
+    std::vector<std::string> names;
+    names.push_back("HeadYaw");
+    names.push_back("HeadPitch");
     
-    std::vector<str>n;
-    n.push_back("HeadYaw");
-    n.push_back("HeadPitch");
-
-    // creates a copy
-    qi::AnyValue names = qi::AnyValue::from(n);
+    // look forward
     
-    
-    // look forward for 1 sec
-    
-    AL::ALValue angles = AL::ALValue::array(0.0f, 0.0f);
+    std::vector<float> angles;
+    angles.push_back(0.0f);
+    angles.push_back(0.0f);
+    //float angles.push_back] = {0.0f, 0.0f};
     
     p_motion_.async<void>(
     "setAngles",
@@ -70,13 +71,15 @@ void TurnheadSubscriber::callback( const float radius )
     angles,
     fractionMaxSpeed);
     
-    ros::Duration(1.0).sleep();
+    //ros::Duration(waittime).sleep();
     
     
     
     // look down for 1 sec
     
-    angles = AL::ALValue::array(0.0f, -radius);
+    angles.clear();
+    angles.push_back(0.0f);
+    angles.push_back(-radius);
     
     p_motion_.async<void>(
     "setAngles",
@@ -84,13 +87,15 @@ void TurnheadSubscriber::callback( const float radius )
     angles,
     fractionMaxSpeed);
     
-    ros::Duration(1.0).sleep();
+    ros::Duration(waittime).sleep();
     
     
     
     // look left for 1 sec
     
-    angles = AL::ALValue::array(-radius, -0.0f);
+    angles.clear();
+    angles.push_back(-radius);
+    angles.push_back(0.0f);
     
     p_motion_.async<void>(
     "setAngles",
@@ -98,13 +103,15 @@ void TurnheadSubscriber::callback( const float radius )
     angles,
     fractionMaxSpeed);
     
-    ros::Duration(1.0).sleep();
+    ros::Duration(waittime).sleep();
     
     
     
     // look up for 1 sec
     
-    angles = AL::ALValue::array(0.0f, radius);
+    angles.clear();
+    angles.push_back(0.0f);
+    angles.push_back(radius);
     
     p_motion_.async<void>(
     "setAngles",
@@ -112,13 +119,15 @@ void TurnheadSubscriber::callback( const float radius )
     angles,
     fractionMaxSpeed);
     
-    ros::Duration(1.0).sleep();
+    ros::Duration(waittime).sleep();
     
     
     
     // look right for 1 sec
     
-    angles = AL::ALValue::array(-radius, 0.0f);
+    angles.clear();
+    angles.push_back(radius);
+    angles.push_back(0.0f);
     
     p_motion_.async<void>(
     "setAngles",
@@ -126,13 +135,15 @@ void TurnheadSubscriber::callback( const float radius )
     angles,
     fractionMaxSpeed);
     
-    ros::Duration(1.0).sleep();
+    ros::Duration(waittime).sleep();
     
     
     
     // look forward (till next round)
     
-    angles = AL::ALValue::array(0.0f, 0.0f);
+    angles.clear();
+    angles.push_back(0.0f);
+    angles.push_back(0.0f);
     
     p_motion_.async<void>(
     "setAngles",

@@ -30,7 +30,7 @@ namespace naoqi
 namespace subscriber
 {
 
-TurnheadSubscriber::TurnheadSubscriber( const std::string& name, const std::string& topic, const qi::SessionPtr& session):
+TurnheadSubscriber::TurnheadSubscriber( const std::string& name, const std::string& topic, const qi::SessionPtr& session ):
   BaseSubscriber( name, topic, session ),
   p_motion_( session->service("ALMotion") )
 {}

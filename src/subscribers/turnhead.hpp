@@ -16,8 +16,8 @@
  */
 
 
-#ifndef MOVETO_SUBSCRIBER_HPP
-#define MOVETO_SUBSCRIBER_HPP
+#ifndef TURNHEAD_SUBSCRIBER_HPP
+#define TURNHEAD_SUBSCRIBER_HPP
 
 /*
  * LOCAL includes
@@ -28,8 +28,7 @@
  * ROS includes
  */
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <tf2_ros/buffer.h>
+
 
 namespace naoqi
 {

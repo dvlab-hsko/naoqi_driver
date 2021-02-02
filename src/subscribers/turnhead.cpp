@@ -41,7 +41,7 @@ void TurnheadSubscriber::reset( const ros::NodeHandle& nh )
   is_initialized_ = true;
 }
 
-void TurnheadSubscriber::callback(std_msg::Empty myMsg)
+void TurnheadSubscriber::callback( const float radius )
 {
     
     // ensure motors are active
@@ -76,7 +76,7 @@ void TurnheadSubscriber::callback(std_msg::Empty myMsg)
     
     // look down for 1 sec
     
-    angles = AL::ALValue::array(0.0f, -0.3f);
+    angles = AL::ALValue::array(0.0f, -radius);
     
     p_motion_.async<void>(
     "setAngles",
@@ -90,7 +90,7 @@ void TurnheadSubscriber::callback(std_msg::Empty myMsg)
     
     // look left for 1 sec
     
-    angles = AL::ALValue::array(-0.3f, -0.0f);
+    angles = AL::ALValue::array(-radius, -0.0f);
     
     p_motion_.async<void>(
     "setAngles",
@@ -104,7 +104,7 @@ void TurnheadSubscriber::callback(std_msg::Empty myMsg)
     
     // look up for 1 sec
     
-    angles = AL::ALValue::array(0.0f, 0.3f);
+    angles = AL::ALValue::array(0.0f, radius);
     
     p_motion_.async<void>(
     "setAngles",
@@ -118,7 +118,7 @@ void TurnheadSubscriber::callback(std_msg::Empty myMsg)
     
     // look right for 1 sec
     
-    angles = AL::ALValue::array(-0.3f, 0.0f);
+    angles = AL::ALValue::array(-radius, 0.0f);
     
     p_motion_.async<void>(
     "setAngles",

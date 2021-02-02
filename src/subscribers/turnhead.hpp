@@ -42,7 +42,7 @@ public:
   ~TurnheadSubscriber(){}
 
   void reset( ros::NodeHandle& nh );
-  void callback( const std_msg::Empty myMsg );
+  void callback( const float radius );
 
 private:
   qi::AnyObject p_motion_;

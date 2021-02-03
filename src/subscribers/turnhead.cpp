@@ -53,103 +53,155 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     1.0);
     
     //define basic vars
-    float fractionMaxSpeed  = 0.1f;
+    bool isAbsolute = true;
+    float holdTime = 3.0f;
+    float transTime = 1.0f;
+    
     std::vector<std::string> names;
     names.push_back("HeadYaw");
     names.push_back("HeadPitch");
     
-    // look forward
+    std::vector<float> tempYawAngles;
+    std::vector<float> tempPitchAngles;
+    std::vector<std::vector<float>> angles;
     
-    std::vector<float> angles;
-    angles.push_back(0.0f);
-    angles.push_back(0.0f);
-    //float angles.push_back] = {0.0f, 0.0f};
-    
-    p_motion_.async<void>(
-    "setAngles",
-    names,
-    angles,
-    fractionMaxSpeed);
-    
-    //ros::Duration(waittime).sleep();
+    std::vector<float> tempYawTimes;
+    std::vector<float> tempPitchTimes;
+    std::vector<std::vector<float>> times;
     
     
     
-    // look down for 1 sec
+
     
-    angles.clear();
-    angles.push_back(0.0f);
-    angles.push_back(-radius);
+    float countTime = 0.0f;
     
-    p_motion_.async<void>(
-    "setAngles",
-    names,
-    angles,
-    fractionMaxSpeed);
+    tempYawAngles.push_back(0.0f);
+    tempPitchAngles.push_back(0.0f);
     
-    ros::Duration(waittime).sleep();
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
     
     
+    // move head from forward to down
     
-    // look left for 1 sec
+    countTime += transTime
     
-    angles.clear();
-    angles.push_back(-radius);
-    angles.push_back(0.0f);
+    tempYawAngles.push_back(0.0f);
+    tempPitchAngles.push_back(-radius);
     
-    p_motion_.async<void>(
-    "setAngles",
-    names,
-    angles,
-    fractionMaxSpeed);
-    
-    ros::Duration(waittime).sleep();
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
     
     
+    // hold position
     
-    // look up for 1 sec
+    countTime += holdTime
     
-    angles.clear();
-    angles.push_back(0.0f);
-    angles.push_back(radius);
+    tempYawAngles.push_back(0.0f);
+    tempPitchAngles.push_back(-radius);
     
-    p_motion_.async<void>(
-    "setAngles",
-    names,
-    angles,
-    fractionMaxSpeed);
-    
-    ros::Duration(waittime).sleep();
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
     
     
     
-    // look right for 1 sec
     
-    angles.clear();
-    angles.push_back(radius);
-    angles.push_back(0.0f);
+    // move head from forward to left
     
-    p_motion_.async<void>(
-    "setAngles",
-    names,
-    angles,
-    fractionMaxSpeed);
+    countTime += transTime
     
-    ros::Duration(waittime).sleep();
+    tempYawAngles.push_back(-radius);
+    tempPitchAngles.push_back(0.0f);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    
+    // hold position
+    
+    countTime += holdTime
+    
+    tempYawAngles.push_back(-radius);
+    tempPitchAngles.push_back(0.0f);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    
+    
+    
+    // move head from forward to up
+    
+    countTime += transTime
+    
+    tempYawAngles.push_back(0.0f);
+    tempPitchAngles.push_back(radius);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    
+    // hold position
+    
+    countTime += holdTime
+    
+    tempYawAngles.push_back(0.0f);
+    tempPitchAngles.push_back(radius);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    
+    
+    
+    // move head from forward to right
+    
+    countTime += transTime
+    
+    tempYawAngles.push_back(radius);
+    tempPitchAngles.push_back(0.0f);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    
+    // hold position
+    
+    countTime += holdTime
+    
+    tempYawAngles.push_back(radius);
+    tempPitchAngles.push_back(0.0f);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    
     
     
     
     // look forward (till next round)
     
-    angles.clear();
-    angles.push_back(0.0f);
-    angles.push_back(0.0f);
+    countTime += transTime
+    
+    tempYawAngles.push_back(0.0f);
+    tempPitchAngles.push_back(0.0f);
+    
+    tempYawTimes.push_back(countTime);
+    tempPitchTimes.push_back(countTime);
+    
+    angles.push_back(tempYawAngles);
+    angles.push_back(tempPitchAngles);
+    times.push_back(tempYawTimes);
+    times.push_back(tempPitchTimes);
+    
+    
     
     p_motion_.async<void>(
-    "setAngles",
+    "angleInterpolation",
     names,
     angles,
-    fractionMaxSpeed);
+    times,
+    isAbsolute);
 
 }
 

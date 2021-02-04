@@ -45,7 +45,6 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
 {
     
     float radius = float(inputRadius->data);
-    float waittime = 3.0f;
 
     // ensure motors are active
     p_motion_.async<void>(
@@ -53,8 +52,8 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     1.0);
     
     //define basic vars
-    float holdTime = 3.0f;
-    float transTime = 1.0f;
+    float holdTime = 2.0f;
+    float transTime = 2.0f;
     
     std::vector<std::string> names;
     names.push_back("HeadYaw");
@@ -72,7 +71,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
 
     
-    float countTime = 1.0f;
+    float countTime = 0.0f;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(0.0f);
@@ -103,7 +102,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempPitchTimes.push_back(countTime);
     
     
-    
+    /*
     
     // move head from forward to left
     
@@ -127,7 +126,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempPitchTimes.push_back(countTime);
     
     
-    
+    */
     
     // move head from forward to up
     
@@ -150,7 +149,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempYawTimes.push_back(countTime);
     tempPitchTimes.push_back(countTime);
     
-    
+    /*
     
     
     // move head from forward to right
@@ -175,7 +174,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempPitchTimes.push_back(countTime);
     
     
-    
+    */
     
     
     // look forward (till next round)

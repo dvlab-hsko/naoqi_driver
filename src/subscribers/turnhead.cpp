@@ -53,7 +53,6 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     1.0);
     
     //define basic vars
-    bool isAbsolute = true;
     float holdTime = 3.0f;
     float transTime = 1.0f;
     
@@ -73,7 +72,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
 
     
-    float countTime = 0.0f;
+    float countTime = 1.0f;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(0.0f);
@@ -84,7 +83,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // move head from forward to down
     
-    countTime += transTime
+    countTime += transTime;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(-radius);
@@ -95,7 +94,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // hold position
     
-    countTime += holdTime
+    countTime += holdTime;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(-radius);
@@ -108,7 +107,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // move head from forward to left
     
-    countTime += transTime
+    countTime += transTime;
     
     tempYawAngles.push_back(-radius);
     tempPitchAngles.push_back(0.0f);
@@ -119,7 +118,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // hold position
     
-    countTime += holdTime
+    countTime += holdTime;
     
     tempYawAngles.push_back(-radius);
     tempPitchAngles.push_back(0.0f);
@@ -132,7 +131,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // move head from forward to up
     
-    countTime += transTime
+    countTime += transTime;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(radius);
@@ -143,7 +142,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // hold position
     
-    countTime += holdTime
+    countTime += holdTime;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(radius);
@@ -156,7 +155,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // move head from forward to right
     
-    countTime += transTime
+    countTime += transTime;
     
     tempYawAngles.push_back(radius);
     tempPitchAngles.push_back(0.0f);
@@ -167,7 +166,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // hold position
     
-    countTime += holdTime
+    countTime += holdTime;
     
     tempYawAngles.push_back(radius);
     tempPitchAngles.push_back(0.0f);
@@ -181,7 +180,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     
     // look forward (till next round)
     
-    countTime += transTime
+    countTime += transTime;
     
     tempYawAngles.push_back(0.0f);
     tempPitchAngles.push_back(0.0f);
@@ -194,14 +193,13 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     times.push_back(tempYawTimes);
     times.push_back(tempPitchTimes);
     
-    
+    std::cout << "Movehead sending angleInterpolation to NaoQi with " << radius << " as radius" << std::endl;
     
     p_motion_.async<void>(
-    "angleInterpolation",
+    "angleInterpolationBezier",
     names,
-    angles,
     times,
-    isAbsolute);
+    angles);
 
 }
 

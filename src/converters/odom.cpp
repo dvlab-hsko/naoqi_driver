@@ -50,20 +50,19 @@ void OdomConverter::registerCallback( message_actions::MessageAction action, Cal
 void OdomConverter::callAll( const std::vector<message_actions::MessageAction>& actions )
 {
   
-  int FRAME_WORLD = 1;
   bool use_sensor = true;
   // documentation of getPosition available here: http://doc.aldebaran.com/2-1/naoqi/motion/control-cartesian.html
-  std::vector<float> al_odometry_data = p_motion_.call<std::vector<float> >( "getPosition", "Torso", FRAME_WORLD, use_sensor );
+  std::vector<float> al_odometry_data = p_motion_.call<std::vector<float> >( "getRobotPosition", use_sensor );
   
   const ros::Time& odom_stamp = ros::Time::now();
   std::vector<float> al_speed_data = p_motion_.call<std::vector<float> >( "getRobotVelocity" );
   
   const float& odomX  =  al_odometry_data[0];
   const float& odomY  =  al_odometry_data[1];
-  const float& odomZ  =  al_odometry_data[2];
-  const float& odomWX =  al_odometry_data[3];
-  const float& odomWY =  al_odometry_data[4];
-  const float& odomWZ =  al_odometry_data[5];
+  const float& odomZ  =  0.0f;
+  const float& odomWX =  0.0f;
+  const float& odomWY =  0.0f;
+  const float& odomWZ =  al_odometry_data[2];
   
   const float& dX = al_speed_data[0];
   const float& dY = al_speed_data[1];

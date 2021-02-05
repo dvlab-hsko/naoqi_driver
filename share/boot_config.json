@@ -55,8 +55,8 @@
     },
     "imu_torso":
     {
-      "enabled"       : false,
-      "frequency"     : 10
+      "enabled"       : true,
+      "frequency"     : 50
     },
     "imu_base":
     {

@@ -55,6 +55,11 @@ private:
 
   std::map<message_actions::MessageAction, Callback_t> callbacks_;
   nav_msgs::Odometry msg_;
+  
+  float startX;
+  float startY;
+  float startWZ;
+  bool use_sensor;
 }; // class
 
 } //publisher

@@ -38,8 +38,14 @@ namespace converter
 OdomConverter::OdomConverter( const std::string& name, const float& frequency, const qi::SessionPtr& session ):
   BaseConverter( name, frequency, session ),
   p_motion_( session->service("ALMotion") )
-  
 {
+  use_sensor = true;
+
+  std::vector<float> al_odometry_data = p_motion_.call<std::vector<float> >( "getRobotPosition", use_sensor );
+  
+  startX = al_odometry_data[0];
+  startY = al_odometry_data[1];
+  startWZ = al_odometry_data[2];
 }
 
 void OdomConverter::registerCallback( message_actions::MessageAction action, Callback_t cb )
@@ -49,20 +55,18 @@ void OdomConverter::registerCallback( message_actions::MessageAction action, Cal
 
 void OdomConverter::callAll( const std::vector<message_actions::MessageAction>& actions )
 {
-  
-  bool use_sensor = true;
   // documentation of getPosition available here: http://doc.aldebaran.com/2-1/naoqi/motion/control-cartesian.html
   std::vector<float> al_odometry_data = p_motion_.call<std::vector<float> >( "getRobotPosition", use_sensor );
   
   const ros::Time& odom_stamp = ros::Time::now();
   std::vector<float> al_speed_data = p_motion_.call<std::vector<float> >( "getRobotVelocity" );
   
-  const float& odomX  =  al_odometry_data[0];
-  const float& odomY  =  al_odometry_data[1];
+  const float& odomX  =  (al_odometry_data[0] - startX) * std::cos(startWZ) + (al_odometry_data[1] - startY) * std::sin(startWZ);
+  const float& odomY  =  (al_odometry_data[1] - startY) * std::cos(startWZ) - (al_odometry_data[0] - startX) * std::sin(startWZ);
   const float& odomZ  =  0.0f;
   const float& odomWX =  0.0f;
   const float& odomWY =  0.0f;
-  const float& odomWZ =  al_odometry_data[2];
+  const float& odomWZ =  al_odometry_data[2] - startWZ;
   
   const float& dX = al_speed_data[0];
   const float& dY = al_speed_data[1];
@@ -90,6 +94,16 @@ void OdomConverter::callAll( const std::vector<message_actions::MessageAction>& 
   msg_odom.twist.twist.angular.x = 0;
   msg_odom.twist.twist.angular.y = 0;
   msg_odom.twist.twist.angular.z = dWZ;
+
+  // add covariance for uncertenty
+
+  msg_odom.twist.covariance[0] = 0.01f;
+  msg_odom.twist.covariance[7] = 0.01f;
+  msg_odom.twist.covariance[14] = 0.0f;
+  
+  msg_odom.twist.covariance[21] = 0.0f;
+  msg_odom.twist.covariance[28] = 0.0f;
+  msg_odom.twist.covariance[35] = 0.01f;
 
   for_each( message_actions::MessageAction action, actions )
   {

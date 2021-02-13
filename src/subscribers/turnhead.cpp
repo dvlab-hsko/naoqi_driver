@@ -102,7 +102,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempPitchTimes.push_back(countTime);
     
     
-    /*
+    
     
     // move head from forward to left
     
@@ -126,7 +126,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempPitchTimes.push_back(countTime);
     
     
-    */
+    
     
     // move head from forward to up
     
@@ -149,7 +149,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempYawTimes.push_back(countTime);
     tempPitchTimes.push_back(countTime);
     
-    /*
+    
     
     
     // move head from forward to right
@@ -174,7 +174,7 @@ void TurnheadSubscriber::callback( const std_msgs::Float32::ConstPtr & inputRadi
     tempPitchTimes.push_back(countTime);
     
     
-    */
+    
     
     
     // look forward (till next round)

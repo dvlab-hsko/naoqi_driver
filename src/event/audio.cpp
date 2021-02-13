@@ -43,10 +43,10 @@ AudioEventRegister::AudioEventRegister( const std::string& name, const float& fr
     isRecording_(false),
     isDumping_(false)
 {
-  // _getMicrophoneConfig is used for NAOqi < 2.9, _getConfigMap for NAOqi > 2.9
+  // _getMicrophoneConfig is used for NAOqi < 2.8, _getConfigMap for NAOqi > 2.8
   int micConfig;
 
-  if (helpers::driver::isNaoqiVersionLesser(naoqi_version_, 2, 9))
+  if (helpers::driver::isNaoqiVersionLesser(naoqi_version_, 2, 8))
   {
     micConfig = p_robot_model_.call<int>("_getMicrophoneConfig");
   }
